@@ -1,13 +1,11 @@
-[![Codemagic build status](https://api.codemagic.io/apps/5c9fc907581a2d000dec7fda/5c9fc907581a2d000dec7fd9/status_badge.svg)](https://codemagic.io/apps/5c9fc907581a2d000dec7fda/5c9fc907581a2d000dec7fd9/latest_build)
+# Twobros Flutter Chat
 
-# Toptal Flutter Chat
+This is a fork of the cross-platform demo chat client developed using Flutter & Firebase for a Toptal Engineering Blog article.
+The article can be found [here](https://www.toptal.com/flutter/flutter-tutorial).
 
-Cross-platform demo chat client developed using Flutter & Firebase for Toptal Engineering Blog article.
+This fork enabled my first exploration of flutter and firebase and removes the google and facebook authentication and replaces them with a username and password signup/signin.
 
-# Build environment
+I was also hoping to make use of the web features now available in the beta release of flutter, however firebase_messaging does not yet support web.
+As can be seen [here](https://github.com/FirebaseExtended/flutterfire).
 
-This project is developed to work with `flutter channel stable`. There is no guarantee that it will work on different flutter channels.
-
-# API keys
-
-Note - if you clone this repository and try running the project, it'll fail because I've removed API keys for Facebook and Firebase. Refer to the [Facebook](https://developers.facebook.com/docs/facebook-login/) or [Firebase](https://firebase.google.com/docs/flutter/setup) official documentation for a step-by-step guide to setting up the project.
+Building an ipa from this fork has not been tested.
