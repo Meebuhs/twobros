@@ -46,22 +46,7 @@ class LoginWidget extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    showForm(state, context)
-                    // ButtonTheme(
-                    //   minWidth: 256.0,
-                    //   height: 32.0,
-                    //   child: RaisedButton(
-                    //     onPressed: () => BlocProvider.of<LoginBloc>(context)
-                    //         .onLoginGoogle(this),
-                    //     child: Text(
-                    //       "Login with Google",
-                    //       style: TextStyle(color: Colors.white),
-                    //     ),
-                    //     color: Colors.redAccent,
-                    //   ),
-                    // )
-                  ],
+                  children: <Widget>[showForm(state, context)],
                 ),
               );
             }
@@ -145,8 +130,19 @@ class LoginWidget extends StatelessWidget {
             shape: new RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(30.0)),
             color: Colors.blue,
-            child: new Text(state.isLogin ? 'Login' : 'Create account',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+            child: StreamBuilder(
+              stream:
+                  BlocProvider.of<LoginBloc>(context).isLoginFormStream.stream,
+              builder: (BuildContext context, snapshot) {
+                String buttonText =
+                    'Login'; // Button text if snapshot is true (login form)
+                if (snapshot.data == false) {
+                  buttonText = 'Create account';
+                }
+                return new Text(buttonText,
+                    style: new TextStyle(fontSize: 20.0, color: Colors.white));
+              },
+            ),
             onPressed: () =>
                 BlocProvider.of<LoginBloc>(context).validateAndSubmit(state),
           ),
@@ -155,9 +151,19 @@ class LoginWidget extends StatelessWidget {
 
   Widget showSecondaryButton(LoginState state, BuildContext context) {
     return new FlatButton(
-        child: new Text(
-            state.isLogin ? 'Create an account' : 'Have an account? Sign in',
-            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+        child: StreamBuilder(
+          stream: BlocProvider.of<LoginBloc>(context).isLoginFormStream.stream,
+          builder: (BuildContext context, snapshot) {
+            String buttonText =
+                'Create an account'; // Button text if snapshot is true (login form)
+            if (snapshot.data == false) {
+              buttonText = 'Have an account? Sign in';
+            }
+            return new Text(buttonText,
+                style:
+                    new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300));
+          },
+        ),
         onPressed: () =>
             BlocProvider.of<LoginBloc>(context).toggleFormMode(state));
   }

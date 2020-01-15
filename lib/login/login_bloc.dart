@@ -11,6 +11,7 @@ import '../model/user.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   StreamSubscription<FirebaseUser> _authStateListener;
+  StreamController isLoginFormStream = StreamController<bool>.broadcast();
 
   void setupAuthStateListener(LoginWidget view) {
     if (_authStateListener == null) {
@@ -63,6 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     state.formKey.currentState.reset();
     state.errorMessage = "";
     state.isLogin = !state.isLogin;
+    isLoginFormStream.add(state.isLogin);
     print("toggled ${state.isLogin}");
   }
 
@@ -91,6 +93,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   @override
   Future<void> close() {
     _authStateListener.cancel();
+    isLoginFormStream.close();
     return super.close();
   }
 }
