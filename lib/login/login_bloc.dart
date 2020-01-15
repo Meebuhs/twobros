@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'login_event.dart';
@@ -18,11 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       _authStateListener =
           FirebaseAuth.instance.onAuthStateChanged.listen((user) {
         if (user != null) {
-          final loginProvider = user.providerId;
           UserRepo.getInstance().setCurrentUser(User.fromFirebaseUser(user));
-          if (loginProvider == "google") {
-            // TODO analytics call for google login provider
-          }
           view.navigateToMain();
         } else {
           add(LogoutEvent());
@@ -33,16 +28,42 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  void onLoginGoogle(LoginWidget view) async {
-    add(LoginEventInProgress());
-    final googleSignInRepo = GoogleSignIn(
-        signInOption: SignInOption.standard, scopes: ["profile", "email"]);
-    final account = await googleSignInRepo.signIn();
-    if (account != null) {
-      LoginRepo.getInstance().signInWithGoogle(account);
-    } else {
-      add(LogoutEvent());
+  // Perform login or signup
+  void validateAndSubmit(LoginState state) async {
+    state.errorMessage = "";
+    state.loading = true;
+
+    if (validateAndSave(state)) {
+      try {
+        if (state.isLogin) {
+          await LoginRepo.getInstance().signIn(state.username, state.password);
+        } else {
+          await LoginRepo.getInstance().signUp(state.username, state.password);
+        }
+        state.loading = false;
+      } catch (e) {
+        print('Error: $e');
+        state.formKey.currentState.reset();
+        state.loading = false;
+        state.errorMessage = e.message;
+      }
     }
+  }
+
+  bool validateAndSave(LoginState state) {
+    final form = state.formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
+
+  void toggleFormMode(LoginState state) {
+    state.formKey.currentState.reset();
+    state.errorMessage = "";
+    state.isLogin = !state.isLogin;
+    print("toggled ${state.isLogin}");
   }
 
   void onLogout() async {
@@ -58,12 +79,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginWithGoogleEvent) {
-      yield LoginState.loading(false);
+    if (event is LoginWithEmailEvent) {
+      yield LoginState.loading(false, state);
     } else if (event is LogoutEvent) {
-      yield LoginState.loading(false);
+      yield LoginState.loading(false, state);
     } else if (event is LoginEventInProgress) {
-      yield LoginState.loading(true);
+      yield LoginState.loading(true, state);
     } else if (event is LoginErrorEvent) {}
   }
 

@@ -1,12 +1,11 @@
 class ErrorMessages {
-  static const String NO_USER_FOUND = "Login failed because there is no user in the database";
+  static const String NO_USER_FOUND =
+      "Login failed because there is no user in the database";
 }
 
 class StorageKeys {
   static const String USER_ID_KEY = "user_id_key";
-  static const String USER_DISPLAY_NAME_KEY = "user_display_name_key";
-  static const String USER_PHOTO_URL_KEY = "user_photo_url_key";
-  static const String FCM_TOKEN = "fcmToken";
+  static const String USER_DISPLAY_NAME_KEY = "display_name_key";
 }
 
 class UIConstants {

@@ -1,6 +1,6 @@
 abstract class LoginEvent {}
 
-class LoginWithGoogleEvent extends LoginEvent {}
+class LoginWithEmailEvent extends LoginEvent {}
 
 class LogoutEvent extends LoginEvent {}
 

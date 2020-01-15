@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:twobros/model/login_response.dart';
+import 'package:twobros/model/user.dart';
 
 import '../util/constants.dart';
-import 'login_response.dart';
-import 'user.dart';
 import 'firebase_repo.dart';
-import 'user_repo.dart';
 
 class LoginRepo {
   static LoginRepo _instance;
@@ -24,24 +22,28 @@ class LoginRepo {
     return _instance;
   }
 
-  Future<LoginResponse> _signIn(AuthCredential credentials) async {
-    final authResult = await _auth.signInWithCredential(credentials);
-    if (authResult != null && authResult.user != null) {
-      final user = authResult.user;
-      final token = await UserRepo.getInstance().getFCMToken();
-      User serializedUser =
-          User(user.uid, user.displayName, user.photoUrl, token);
-      await _firestore
-          .collection(FirestorePaths.USERS_COLLECTION)
-          .document(user.uid)
-          .setData(serializedUser.map, merge: true);
-      return User(user.uid, user.displayName, user.photoUrl, token);
+  Future<LoginResponse> signIn(String username, String password) async {
+    AuthResult result = await _auth.signInWithEmailAndPassword(
+        email: "$username@twobros-5cb70.com", password: password);
+    if (result != null && result.user != null) {
+      return User(result.user.uid, username);
     } else {
       return LoginFailedResponse(ErrorMessages.NO_USER_FOUND);
     }
   }
 
-  Future<bool> _signOut() async {
+  Future<String> signUp(String username, String password) async {
+    AuthResult result = await _auth.createUserWithEmailAndPassword(
+        email: "$username@twobros-5cb70.com", password: password);
+    User user = User(result.user.uid, username);
+    await _firestore
+        .collection(FirestorePaths.USERS_COLLECTION)
+        .document(result.user.uid)
+        .setData(user.map, merge: true);
+    return result.user.uid;
+  }
+
+  Future<bool> signOut() async {
     return _auth.signOut().catchError((error) {
       print("LoginRepo::logOut() encountered an error:\n${error.error}");
       return false;
@@ -50,15 +52,8 @@ class LoginRepo {
     });
   }
 
-  Future<LoginResponse> signInWithGoogle(GoogleSignInAccount account) async {
-    final authentication = await account.authentication;
-    final credentials = GoogleAuthProvider.getCredential(
-        idToken: authentication.idToken,
-        accessToken: authentication.accessToken);
-    return _signIn(credentials);
-  }
-
-  Future<bool> signOut() async {
-    return _signOut();
+  Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser user = await _auth.currentUser();
+    return user;
   }
 }

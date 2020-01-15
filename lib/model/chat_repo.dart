@@ -41,20 +41,21 @@ class ChatRepo {
     return _chatUsersSubject.stream;
   }
 
-  Future<SelectedChatroom> getChatroom(String chatroomId, User currentUser, User otherUser) async {
-    DocumentReference chatroomRef = _firestore.document(FirestorePaths.CHATROOMS_COLLECTION + "/" + chatroomId);
+  Future<SelectedChatroom> getChatroom(
+      String chatroomId, User currentUser, User otherUser) async {
+    DocumentReference chatroomRef = _firestore
+        .document(FirestorePaths.CHATROOMS_COLLECTION + "/" + chatroomId);
     if (chatroomRef != null) {
       List<User> users = List(2);
       users[0] = otherUser;
       users[1] = currentUser;
       try {
-        return SelectedChatroom(chatroomId, otherUser.displayName);
+        return SelectedChatroom(chatroomId, otherUser.uid);
       } catch (error) {
         print(error);
         return null;
       }
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -79,9 +80,11 @@ class ChatRepo {
         .document(chatroomId)
         .snapshots()
         .map((data) {
-          Chatroom chatroom = Deserializer.deserializeChatroomMessages(data, _chatUsersSubject.value);
-          chatroom.messages.sort((message1, message2) => message1.timestamp.compareTo(message2.timestamp));
-          return chatroom;
+      Chatroom chatroom = Deserializer.deserializeChatroomMessages(
+          data, _chatUsersSubject.value);
+      chatroom.messages.sort((message1, message2) =>
+          message1.timestamp.compareTo(message2.timestamp));
+      return chatroom;
     });
   }
 
@@ -112,21 +115,27 @@ class ChatRepo {
           .collection(FirestorePaths.CHATROOMS_COLLECTION)
           .add(chatroomMap);
       DocumentSnapshot chatroomSnapshot = await reference.get();
-      return SelectedChatroom(chatroomSnapshot.documentID, users[0].displayName);
+      return SelectedChatroom(
+          chatroomSnapshot.documentID, users[0].displayName);
     }
   }
 
-  Future<bool> sendMessageToChatroom(String chatroomId, User user, String message) async {
+  Future<bool> sendMessageToChatroom(
+      String chatroomId, User user, String message) async {
     try {
-      DocumentReference authorRef = _firestore.collection(FirestorePaths.USERS_COLLECTION).document(user.uid);
-      DocumentReference chatroomRef = _firestore.collection(FirestorePaths.CHATROOMS_COLLECTION).document(chatroomId);
+      DocumentReference authorRef = _firestore
+          .collection(FirestorePaths.USERS_COLLECTION)
+          .document(user.uid);
+      DocumentReference chatroomRef = _firestore
+          .collection(FirestorePaths.CHATROOMS_COLLECTION)
+          .document(chatroomId);
       Map<String, dynamic> serializedMessage = {
-        "author" : authorRef,
-        "timestamp" : DateTime.now(),
-        "value" : message
+        "author": authorRef,
+        "timestamp": DateTime.now(),
+        "value": message
       };
       chatroomRef.updateData({
-        "messages" : FieldValue.arrayUnion([serializedMessage])
+        "messages": FieldValue.arrayUnion([serializedMessage])
       });
       return true;
     } catch (e) {
