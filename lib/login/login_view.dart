@@ -16,7 +16,7 @@ class _LoginState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
-        builder: (context) => LoginBloc(),
+        create: (context) => LoginBloc(),
         child: LoginWidget(widget: widget, widgetState: this));
   }
 }

@@ -68,8 +68,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   @override
-  void close() {
+  Future<void> close() {
     _authStateListener.cancel();
-    super.close();
+    return super.close();
   }
 }

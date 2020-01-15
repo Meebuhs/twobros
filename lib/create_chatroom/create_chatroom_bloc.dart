@@ -29,8 +29,10 @@ class CreateChatroomBloc
 
   void _initialize() async {
     currentUser = await UserRepo.getInstance().getCurrentUser();
-    chatUserSubscription = ChatRepo.getInstance().getChatUsers().listen((users) {
-      List<User> processedListOfUsers = users.where((user) => user.uid != currentUser.uid).toList();
+    chatUserSubscription =
+        ChatRepo.getInstance().getChatUsers().listen((users) {
+      List<User> processedListOfUsers =
+          users.where((user) => user.uid != currentUser.uid).toList();
       add(ChatroomUserListUpdatedEvent(processedListOfUsers));
     });
   }
@@ -42,25 +44,29 @@ class CreateChatroomBloc
     List<User> chatroomUsers = List<User>(2);
     chatroomUsers[0] = user;
     chatroomUsers[1] = currentUser;
-    ChatRepo.getInstance().startChatroomForUsers(chatroomUsers).then((chatroom) {
+    ChatRepo.getInstance()
+        .startChatroomForUsers(chatroomUsers)
+        .then((chatroom) {
       view.navigateToSelectedChatroom(chatroom);
     });
   }
 
   @override
-  Stream<CreateChatroomState> mapEventToState(CreateChatroomEvent event) async* {
+  Stream<CreateChatroomState> mapEventToState(
+      CreateChatroomEvent event) async* {
     if (event is ChatroomUserListUpdatedEvent) {
-      yield CreateChatroomState.isLoading(false, CreateChatroomState.users(event.users, state));
+      yield CreateChatroomState.isLoading(
+          false, CreateChatroomState.users(event.users, state));
     } else if (event is CreateChatroomRequestedEvent) {
       yield CreateChatroomState.isLoading(true, state);
     }
   }
 
   @override
-  void close() {
+  Future<void> close() {
     if (chatUserSubscription != null) {
       chatUserSubscription.cancel();
     }
-    super.close();
+    return super.close();
   }
 }

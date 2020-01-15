@@ -17,19 +17,18 @@ class CreateChatroomScreen extends StatefulWidget {
 }
 
 class _CreateChatroomState extends State<CreateChatroomScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<CreateChatroomBloc>(
-      builder: (context) => CreateChatroomBloc(),
-      child: CreateChatroomWidget(widget: widget, widgetState: this)
-    );
+        create: (context) => CreateChatroomBloc(),
+        child: CreateChatroomWidget(widget: widget, widgetState: this));
   }
-
 }
 
 class CreateChatroomWidget extends StatelessWidget {
-  const CreateChatroomWidget({Key key, @required this.widget, @required this.widgetState}) : super(key: key);
+  const CreateChatroomWidget(
+      {Key key, @required this.widget, @required this.widgetState})
+      : super(key: key);
 
   final CreateChatroomScreen widget;
   final _CreateChatroomState widgetState;
@@ -55,9 +54,9 @@ class CreateChatroomWidget extends StatelessWidget {
                   return InkWell(
                       child: _buildItem(state.users[index]),
                       onTap: () {
-                        BlocProvider.of<CreateChatroomBloc>(context).startChat(state.users[index], this);
-                      }
-                  );
+                        BlocProvider.of<CreateChatroomBloc>(context)
+                            .startChat(state.users[index], this);
+                      });
                 },
                 itemCount: state.users.length,
                 padding: EdgeInsets.all(UIConstants.SMALLER_PADDING),
@@ -70,6 +69,7 @@ class CreateChatroomWidget extends StatelessWidget {
   }
 
   void navigateToSelectedChatroom(SelectedChatroom chatroom) {
-    NavigationHelper.navigateToInstantMessaging(widgetState.context, chatroom.displayName, chatroom.id);
+    NavigationHelper.navigateToInstantMessaging(
+        widgetState.context, chatroom.displayName, chatroom.id);
   }
 }

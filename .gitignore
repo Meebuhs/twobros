@@ -29,6 +29,7 @@ doc/api/
 .idea
 **/node_modules/*
 **/.firebaserc
+google-services.json
 
 ### Firebase Patch ###
 .runtimeconfig.json
@@ -50,6 +51,7 @@ flutter_export_environment.sh
 **/android/gradlew
 **/android/gradlew.bat
 **/android/local.properties
+**/android/keystore.properties
 **/android/**/GeneratedPluginRegistrant.java
 
 # iOS/XCode related

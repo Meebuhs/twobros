@@ -16,19 +16,17 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainState extends State<MainScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MainBloc>(
-      builder: (context) => MainBloc(),
-      child: MainWidget(widget: widget, widgetState: this)
-    );
+        create: (context) => MainBloc(),
+        child: MainWidget(widget: widget, widgetState: this));
   }
-
 }
 
 class MainWidget extends StatelessWidget {
-  const MainWidget({Key key, @required this.widget, @required this.widgetState}) : super(key: key);
+  const MainWidget({Key key, @required this.widget, @required this.widgetState})
+      : super(key: key);
 
   final MainScreen widget;
   final _MainState widgetState;
@@ -71,8 +69,10 @@ class MainWidget extends StatelessWidget {
                   return InkWell(
                       child: _buildItem(state.chatrooms[index]),
                       onTap: () {
-                        BlocProvider.of<MainBloc>(context).retrieveChatroomForParticipant(
-                            state.chatrooms[index].participants.first, this);
+                        BlocProvider.of<MainBloc>(context)
+                            .retrieveChatroomForParticipant(
+                                state.chatrooms[index].participants.first,
+                                this);
                       });
                 },
                 itemCount: state.chatrooms.length,
@@ -101,7 +101,8 @@ class MainWidget extends StatelessWidget {
   }
 
   void _clickAddChat() {
-    NavigationHelper.navigateToAddChat(widgetState.context, addToBackStack: true);
+    NavigationHelper.navigateToAddChat(widgetState.context,
+        addToBackStack: true);
   }
 
   UserItem _buildItem(Chatroom chatroom) {
@@ -113,6 +114,8 @@ class MainWidget extends StatelessWidget {
   }
 
   void navigateToChatroom(SelectedChatroom chatroom) {
-    NavigationHelper.navigateToInstantMessaging(widgetState.context, chatroom.displayName, chatroom.id, addToBackStack: true);
+    NavigationHelper.navigateToInstantMessaging(
+        widgetState.context, chatroom.displayName, chatroom.id,
+        addToBackStack: true);
   }
 }

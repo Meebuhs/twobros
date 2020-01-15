@@ -32,7 +32,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     add(ClearChatroomsEvent());
     final user = await UserRepo.getInstance().getCurrentUser();
     if (user != null) {
-      chatroomsSubscription = ChatRepo.getInstance().getChatroomsForUser(user).listen((chatrooms) {
+      chatroomsSubscription =
+          ChatRepo.getInstance().getChatroomsForUser(user).listen((chatrooms) {
         chatrooms.forEach((room) {
           if (room.participants.first.uid == user.uid) {
             Util.swapElementsInList(room.participants, 0, 1);
@@ -60,17 +61,18 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     if (event is ClearChatroomsEvent) {
       yield MainState.isLoading(true, MainState.initial());
     } else if (event is ChatroomsUpdatedEvent) {
-      yield MainState.isLoading(false, MainState.chatrooms(event.chatrooms, state));
+      yield MainState.isLoading(
+          false, MainState.chatrooms(event.chatrooms, state));
     } else if (event is MainErrorEvent) {
       yield MainState.isLoading(false, state);
     }
   }
 
   @override
-  void close() {
+  Future<void> close() {
     if (chatroomsSubscription != null) {
       chatroomsSubscription.cancel();
     }
-    super.close();
+    return super.close();
   }
 }

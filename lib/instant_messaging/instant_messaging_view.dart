@@ -10,12 +10,14 @@ import 'instant_messaging_bloc.dart';
 import 'instant_messaging_state.dart';
 
 class InstantMessagingScreen extends StatefulWidget {
-  InstantMessagingScreen({Key key, @required this.displayName, @required this.chatroomId})
+  InstantMessagingScreen(
+      {Key key, @required this.displayName, @required this.chatroomId})
       : super(key: key);
 
   final String displayName;
   final String chatroomId;
-  final TextEditingController _textEditingController = IMTextEditingController();
+  final TextEditingController _textEditingController =
+      IMTextEditingController();
 
   @override
   State<StatefulWidget> createState() => _InstantMessagingState(chatroomId);
@@ -29,15 +31,15 @@ class _InstantMessagingState extends State<InstantMessagingScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<InstantMessagingBloc>(
-      builder: (context) => InstantMessagingBloc(chatroomId),
+      create: (context) => InstantMessagingBloc(chatroomId),
       child: InstantMessagingWidget(widget: widget),
     );
   }
-
 }
 
 class InstantMessagingWidget extends StatelessWidget {
-  const InstantMessagingWidget({Key key, @required this.widget}) : super(key: key);
+  const InstantMessagingWidget({Key key, @required this.widget})
+      : super(key: key);
 
   final InstantMessagingScreen widget;
 
@@ -62,7 +64,8 @@ class InstantMessagingWidget extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(bottom: UIConstants.STANDARD_PADDING),
+                        margin: EdgeInsets.only(
+                            bottom: UIConstants.STANDARD_PADDING),
                         padding: EdgeInsets.symmetric(
                             vertical: UIConstants.SMALLER_PADDING,
                             horizontal: UIConstants.SMALLER_PADDING),
@@ -72,7 +75,8 @@ class InstantMessagingWidget extends StatelessWidget {
                           focusNode: FocusNode(),
                           style: TextStyle(color: Colors.black),
                           cursorColor: Colors.blueAccent,
-                          decoration: InputDecoration(hintText: "Your message..."),
+                          decoration:
+                              InputDecoration(hintText: "Your message..."),
                           textCapitalization: TextCapitalization.sentences,
                         ),
                       ),
@@ -102,8 +106,8 @@ class InstantMessagingWidget extends StatelessWidget {
                         horizontal: UIConstants.SMALLER_PADDING,
                         vertical: UIConstants.SMALLER_PADDING,
                       ),
-                      itemBuilder: (context, index) =>
-                          _buildMessageItem(state.messages[state.messages.length - 1 - index]),
+                      itemBuilder: (context, index) => _buildMessageItem(
+                          state.messages[state.messages.length - 1 - index]),
                       itemCount: state.messages.length,
                       reverse: true,
                     ),
@@ -125,9 +129,8 @@ class InstantMessagingWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0)
-              ),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
               child: Image.network(url, width: 256),
             ),
           ],
@@ -137,9 +140,8 @@ class InstantMessagingWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8.0)
-              ),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(8.0)),
               child: Image.network(url, width: 256),
             ),
           ],
@@ -154,7 +156,8 @@ class InstantMessagingWidget extends StatelessWidget {
           textAlign: TextAlign.end,
         ),
         decoration: BoxDecoration(
-            color: Colors.lightBlueAccent, borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            color: Colors.lightBlueAccent,
+            borderRadius: BorderRadius.all(Radius.circular(6.0))),
         padding: EdgeInsets.all(UIConstants.SMALLER_PADDING),
         margin: EdgeInsets.symmetric(
           vertical: UIConstants.SMALLER_PADDING / 2.0,
@@ -168,7 +171,8 @@ class InstantMessagingWidget extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         decoration: BoxDecoration(
-            color: Colors.blueAccent, borderRadius: BorderRadius.all(Radius.circular(6.0))),
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.all(Radius.circular(6.0))),
         padding: EdgeInsets.all(UIConstants.SMALLER_PADDING),
         margin: EdgeInsets.symmetric(
           vertical: UIConstants.SMALLER_PADDING / 2.0,
