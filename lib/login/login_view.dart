@@ -13,19 +13,18 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginState extends State<LoginScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<LoginBloc>(
-      builder: (context) => LoginBloc(),
-      child: LoginWidget(widget: widget, widgetState: this)
-    );
+        builder: (context) => LoginBloc(),
+        child: LoginWidget(widget: widget, widgetState: this));
   }
-
 }
 
 class LoginWidget extends StatelessWidget {
-  const LoginWidget({Key key, @required this.widget, @required this.widgetState}) : super(key: key);
+  const LoginWidget(
+      {Key key, @required this.widget, @required this.widgetState})
+      : super(key: key);
 
   final LoginScreen widget;
   final _LoginState widgetState;
@@ -41,9 +40,7 @@ class LoginWidget extends StatelessWidget {
           bloc: BlocProvider.of<LoginBloc>(context),
           builder: (context, LoginState state) {
             if (state.loading) {
-              return Center(
-                  child: CircularProgressIndicator(strokeWidth: 4.0)
-              );
+              return Center(child: CircularProgressIndicator(strokeWidth: 4.0));
             } else {
               return Center(
                 child: Column(
@@ -54,26 +51,15 @@ class LoginWidget extends StatelessWidget {
                       minWidth: 256.0,
                       height: 32.0,
                       child: RaisedButton(
-                        onPressed: () => BlocProvider.of<LoginBloc>(context).onLoginGoogle(this),
+                        onPressed: () => BlocProvider.of<LoginBloc>(context)
+                            .onLoginGoogle(this),
                         child: Text(
                           "Login with Google",
                           style: TextStyle(color: Colors.white),
                         ),
                         color: Colors.redAccent,
                       ),
-                    ),
-                    ButtonTheme(
-                      minWidth: 256.0,
-                      height: 32.0,
-                      child: RaisedButton(
-                        onPressed: () => BlocProvider.of<LoginBloc>(context).onLoginFacebook(this),
-                        child: Text(
-                          "Login with Facebook",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        color: Colors.blueAccent,
-                      ),
-                    ),
+                    )
                   ],
                 ),
               );
@@ -82,9 +68,7 @@ class LoginWidget extends StatelessWidget {
     );
   }
 
-
-
   void navigateToMain() {
-      NavigationHelper.navigateToMain(widgetState.context);
+    NavigationHelper.navigateToMain(widgetState.context);
   }
 }

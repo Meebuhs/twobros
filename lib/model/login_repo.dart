@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../util/constants.dart';
@@ -30,7 +29,8 @@ class LoginRepo {
     if (authResult != null && authResult.user != null) {
       final user = authResult.user;
       final token = await UserRepo.getInstance().getFCMToken();
-      User serializedUser = User(user.uid, user.displayName, user.photoUrl, token);
+      User serializedUser =
+          User(user.uid, user.displayName, user.photoUrl, token);
       await _firestore
           .collection(FirestorePaths.USERS_COLLECTION)
           .document(user.uid)
@@ -55,12 +55,6 @@ class LoginRepo {
     final credentials = GoogleAuthProvider.getCredential(
         idToken: authentication.idToken,
         accessToken: authentication.accessToken);
-    return _signIn(credentials);
-  }
-
-  Future<LoginResponse> signInWithFacebook(FacebookLoginResult result) async {
-    final credentials = FacebookAuthProvider.getCredential(
-        accessToken: result.accessToken.token);
     return _signIn(credentials);
   }
 
