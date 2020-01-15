@@ -445,9 +445,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rs.co.estel.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meebuhs.twobros;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Toptal Demo Chat Development";
+				PROVISIONING_PROFILE_SPECIFIER = "twobros dev";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -589,9 +589,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rs.co.estel.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meebuhs.twobros;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Toptal Demo Chat Development";
+				PROVISIONING_PROFILE_SPECIFIER = "twobros dev";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
@@ -627,9 +627,9 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = rs.co.estel.chat;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meebuhs.twobros;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Toptal Demo Chat Development";
+				PROVISIONING_PROFILE_SPECIFIER = "twobros dev";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 5.0;

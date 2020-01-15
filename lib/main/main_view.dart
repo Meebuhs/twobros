@@ -35,7 +35,7 @@ class MainWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Toptal Chat'),
+        title: Text('twobros'),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.lock_open),
